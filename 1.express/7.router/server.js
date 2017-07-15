@@ -8,8 +8,7 @@ let category = require('./routes/category');
 //当客户端请求url地址 /user/signup的话，也就是说是以/user开头的话，才会走user中间件
 app.use('/user',user);
 //当客户端请求的地址是以/category开头的话，才会走category中间件
-app.use('/category',category);
-app.use(category);
+//app.use('/category',category);
 
 app.listen(8080);
 //端口号的取值范围0-65535
