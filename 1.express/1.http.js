@@ -9,6 +9,8 @@ let http = require('http');
 //创建一个http服务器,参数是一个请求监听函数，当服务器收到客户端的请求的时候会执行此监听函数
 //req=请求对象 res=响应对象
 //乱码的原因是编辑器的编码(utf-8)和浏览器的默认编码(GBK)不一样
+//1. 业务全部放在一个函数里会导致此函数过于庞大
+//2. 以后重构起来的风险比较大
 http.createServer(function(req,res){
   //获取本次请求的方法
   let method = req.method;
