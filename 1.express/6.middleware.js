@@ -41,8 +41,10 @@ app.use(function(req,res,next){
           params = STATUS_CODES[params];
           break;
         default:
+          //默认情况下直接转成字符串
           params = params.toString();
       }
+      //必须调用end方法把响应体发送给客户端
       res.end(params);
    }
    next();
