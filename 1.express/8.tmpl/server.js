@@ -23,7 +23,11 @@ app.get('/',function(req,res){
 id name
 1  zfpx
 */
+//路径只能写路径名
+//查询参数通过req.query获取
+//路径参数通过req.params获取
 app.get('/user',function(req,res){
-
+  // {id:1,name:'zfpx'}
+  res.render('user',req.query);
 });
 app.listen(8080);
