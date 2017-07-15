@@ -33,4 +33,12 @@ app.get('/user',function(req,res){
   // {id:1,name:'zfpx'}
   res.render('user',req.query);
 });
+let users = [
+  {id:1,name:'zfpx1'},
+  {id:2,name:'zfpx2'},
+  {id:3,name:'zfpx3'}
+]
+app.get('/users',function(req,res){
+  res.render('users',{users:users});
+});
 app.listen(8080);
