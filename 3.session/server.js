@@ -5,7 +5,7 @@ let app = express();
 app.use(session({
   resave:true,//每次客户端请求服务器的时候，都要重新保存session
   saveUninitialized:true,//保存未初始化的session
-  secret:'zfpx'//加密的秘钥
+  secret:'eeeeeeee'//加密的秘钥
 }));
 //name=zfpx
 //req.session 就是客户端在服务器端对应的对象
