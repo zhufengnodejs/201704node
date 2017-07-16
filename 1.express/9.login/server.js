@@ -7,6 +7,12 @@ let express = require('express');
 //app是请求监听函数,当服务器收到客户端的请求后执行的函数
 let app = express();
 let path = require('path');
+//请求体解析器
+let bodyParser = require('body-parser');
+//使用中间件来解析请求体，并把请求体的内容转成对象并挂载到req.body上
+//基本上所有的中间件都是一个函数，都需要执行
+//此中间件可以解析编码后的url的请求体,把请求体转成对象 req.body={}
+app.use(bodyParser.urlencoded({extended:true}));
 //设置模板的类型，它可以决定添加的模板后缀
 app.set('view engine','html');
 //设置模板存放的根目录，根路径
@@ -28,7 +34,6 @@ app.engine('.html',require('ejs').__express);
 // /user/signup
 let user = require('./routes/user');
 app.use(express.static(path.resolve('../../node_modules')));
-app.use(express.static(path.resolve('./public')));
 //user是个变量，它的值指向的是模块的导出对象 module.exports
 app.use('/user',user);
 //如果请求的URL路径是以/user开头的话，会交由user中间件来进行匹配子路径
