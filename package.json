@@ -1,0 +1,26 @@
+{
+  "name": "201704node",
+  "version": "1.0.0",
+  "description": "1. 课件会在晚上统一提交\r 2. 如果发现哪里听不明白了，或者讲的快了一定要及时提醒",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhufengnodejs/201704node.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zhufengnodejs/201704node/issues"
+  },
+  "homepage": "https://github.com/zhufengnodejs/201704node#readme",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "bootstrap": "^3.3.7",
+    "ejs": "^2.5.6",
+    "express": "^4.15.3"
+  }
+}
