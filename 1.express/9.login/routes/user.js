@@ -12,7 +12,7 @@ let router = express.Router();
 router.get('/signup',function(req,res){
   //渲染一个模板，返回一个空白的注册表单
   //1参数是模板的相对路径，相对模板的根目录
-  res.render('signup');
+  res.render('signup',{});
 });
 router.post('/signup',function(req,res){
   res.send('注册');
