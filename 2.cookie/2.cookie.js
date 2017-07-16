@@ -10,15 +10,13 @@ let server = http.createServer(function(req,res){
   if(url == '/visit'){
     //先取得请求头中的cookie字段
     let cookie = req.headers.cookie;
-    //把它转成对象
-    let cookieObj = querystring.parse(cookie,'; ');
-    //取得cookie对象的visit属性
-    let visit = cookieObj.visit;
+    // name=zfpx; age=8
+    let cookieObj = querystring.parse(cookie,'; ');//把它转成对象
+    let visit = cookieObj.visit;//取得cookie对象的visit属性
     let count = 1;//默认是第一次
-    //如果有值则以前服务器向客户写入过此cookie
-    if(visit){
-      //把旧的值+1
-      count = parseInt(visit) +1;
+    if(visit){//如果有值则以前服务器向客户写入过此cookie
+
+      count = parseInt(visit) +1;//把旧的值+1
     }
     //通过Set-Cookie设置响应头给客户端
     res.setHeader('Content-Type','text/html;charset=utf-8');
