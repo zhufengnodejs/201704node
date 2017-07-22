@@ -18,7 +18,10 @@ let User = conn.model('User',UserSchema);
 //把这个对象保存到数据库中
 //err错误对象 doc是保存成功之后的文档对象
 //_id是一个对象，类型是ObjectId
-User.create({name:'zfpx',age:8},function(err,doc){
+//如果保存的字段在Schema中没有定义，会被忽略掉
+//如果没有提供完整的所有字段，那么只会保存给定的字段
+//如果类型不匹配，mongodb会尝试进行类型转换，如果转换成功则保存，如果转换失败则报错
+User.create({name:'zfpx',age:"a300"},function(err,doc){
   if(err){
     console.error(err);
   }else{
