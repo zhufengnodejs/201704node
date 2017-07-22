@@ -14,6 +14,7 @@ let UserSchema = new mongoose.Schema({
 });
 //4.定义模型 2个参数表示定义一个模块 1个参数表示获取一个模型
 //如果不通过collection指定集合的名称，那么集合名称=模型名=> 小写->复数
+//此模型是跟某个mongodb连接绑定的
 let User = conn.model('User',UserSchema);
 //把这个对象保存到数据库中
 //err错误对象 doc是保存成功之后的文档对象
@@ -21,7 +22,7 @@ let User = conn.model('User',UserSchema);
 //如果保存的字段在Schema中没有定义，会被忽略掉
 //如果没有提供完整的所有字段，那么只会保存给定的字段
 //如果类型不匹配，mongodb会尝试进行类型转换，如果转换成功则保存，如果转换失败则报错
-User.create({name:'zfpx',age:"a300"},function(err,doc){
+/*User.create({name:'zfpx',age:"300"},function(err,doc){
   if(err){
     console.error(err);
   }else{
@@ -30,8 +31,27 @@ User.create({name:'zfpx',age:"a300"},function(err,doc){
     //{ __v: 0, name: 'zfpx', age: 8, _id: 5972c54c4735381708af182d }
     console.log(doc);
   }
+});*/
+//文档的删除 1参数是文档对象，就是条件
+//默认情况下会删除掉符合条件的所有的文档
+//不同的模型对应于不同的集合
+/*User.remove({age:300},function(err,result){
+  if(err){
+    console.log(err);
+  }else{
+    //{ ok: 1, n: 0 } ok=1表示删除操作成功 n=0表示实际删除掉的条数为0
+    console.log(result.result);
+  }
+});*/
+//修改和查询
+let users = [];
+for(let i=1;i<=10;i++){
+  users.push({name:`zfpx${i}`,age:i})
+}
+//create方法还可以接收一个数组 docs是保存成功之后的数组
+User.create(users,function(err,docs){
+  console.log(docs);
 });
-
 
 
 
