@@ -14,7 +14,9 @@ let users = [];
 router.get('/signup',function(req,res){
   //渲染一个模板，返回一个空白的注册表单
   //1参数是模板的相对路径，相对模板的根目录
-  res.render('signup',{});
+  let error = req.session.error;
+  req.session.error = '';
+  res.render('signup',{error});
 });
 router.post('/signup',function(req,res){
   //因为我们已经引用过了bodyParser中间件，所以req多了一个body属性
@@ -27,6 +29,7 @@ router.post('/signup',function(req,res){
   //如果找到了老用户，注册失败, 返回注册页面重新填写注册表单
   if(oldUser){
     //back是表示返回上一个页面，从哪来回哪里
+    req.session.error = '此用户名已经被使用，请你换个用户名吧';
     res.redirect('back');
   }else{
     //向用户数组中添加新的用户

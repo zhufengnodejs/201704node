@@ -9,6 +9,7 @@ let app = express();
 let path = require('path');
 //请求体解析器
 let bodyParser = require('body-parser');
+let session = require('express-session');
 //使用中间件来解析请求体，并把请求体的内容转成对象并挂载到req.body上
 //基本上所有的中间件都是一个函数，都需要执行
 //此中间件可以解析编码后的url的请求体,把请求体转成对象 req.body={}
@@ -19,6 +20,12 @@ app.set('view engine','html');
 app.set('views',path.resolve('views'));
 //用来指定某种模板的渲染方法
 app.engine('.html',require('ejs').__express);
+//有了session中间件之后会在req.session
+app.use(session({
+  resave:true,
+  saveUninitialized:true,
+  secret:'zfpx'
+}));
 /**
  * 静态文件 不会动的文件 不会动态改变的文件 html css js 图片 图标
  */
@@ -38,4 +45,4 @@ app.use(express.static(path.resolve('../../node_modules')));
 app.use('/user',user);
 //如果请求的URL路径是以/user开头的话，会交由user中间件来进行匹配子路径
 
-app.listen(8080);
+app.listen(8081);
