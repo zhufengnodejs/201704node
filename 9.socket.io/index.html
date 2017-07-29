@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+//当你引入这个脚本之后，会在window上多一个io的属性。
+//调用io方法可以得到一个socket实例
+    let socket = io();
+    //监听连接成功事件
+    socket.on('connect',function(){
+        socket.send('hello');//发送一个hello
+    });
+    //监听message事件，当客户端收到服务器发过来的消息后执行对应的回调函数
+    socket.on('message',function(msg){
+      console.log(msg);
+    });
+</script>
+</body>
+</html>
