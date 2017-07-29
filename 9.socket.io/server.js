@@ -25,7 +25,7 @@ const sockets = {};
 io.on('connection', function (socket) {
   //定义一个私有变量，用来存放每个用户的用户名
   let username;
-  socket.send({author: SYSTEM, content: '欢迎光临，给你自己起个好听的呢称吧!', createAt: new Date().toLocaleString()});
+  let currentRoom;//记录当前客户端在哪个房间内
   //如果客户端发消息过来了，就会执行对应的监听函数
   socket.on('message', function (msg) {
     if (username) {//如果呢称设置过了
@@ -47,7 +47,11 @@ io.on('connection', function (socket) {
           author:username,//发言人就是当前用户
           content:msg,//内容就是本次提交过来的消息
         },function(err,message){
-          io.emit('message',message);
+          if(currentRoom){//意味着用户在某个房间内
+            io.in(currentRoom).emit('message',message);
+          }else{
+            io.emit('message',message);
+          }
         });
       }
     } else {
@@ -64,7 +68,18 @@ io.on('connection', function (socket) {
       messages.reverse();
       //向客户端发送allMessages事件，客户端需要监听allMessages事件
        socket.emit('allMessages',messages);
+      socket.send({author: SYSTEM, content: '欢迎光临，给你自己起个好听的呢称吧!', createAt: new Date().toLocaleString()});
     });
+  });
+  socket.on('join',function(roomName){
+    if(currentRoom){//如果当前客户端在某个房间内，则需要退出当前房间
+      socket.leave(currentRoom);
+    }
+   //让某个客户端进入某个房间
+    socket.join(roomName);
+    currentRoom = roomName;//把新房间赋给当前房间
+    //我已经成功进入你指定的房间了
+    socket.emit('joined',roomName);
   });
 });
 /*Socket.prototype.send = function(){

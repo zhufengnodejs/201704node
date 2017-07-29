@@ -18,7 +18,11 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-success">
                 <div class="panel-heading">
-                    <h3 class="text-center">珠峰聊天室</h3>
+                    <h3 class="text-center">
+                        珠峰聊天室
+                        <button onclick="join('red')" class="btn btn-xs btn-danger red">粉红回忆</button>
+                        <button onclick="join('green')" class="btn btn-xs btn-success green">青涩记忆</button>
+                    </h3>
                 </div>
                 <div class="panel-body">
                     <ul onclick="chat(event)" class="list-group">
@@ -83,6 +87,15 @@
       txtMsg.value = `@${author} `;
     }
   }
+  //进入房间其实是让此客户端在服务器端的socket对应进入某个房间内
+  function join(roomName){
+    //在客户端向服务器端发射一件事件join
+    socket.emit('join',roomName);
+  }
+  socket.on('joined',function(roomName){
+     let btn = document.querySelector('.'+roomName);
+     btn.className = btn.className.replace('btn-xs','');
+  });
 </script>
 </body>
 </html>
