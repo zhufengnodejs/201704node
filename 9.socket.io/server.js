@@ -25,8 +25,12 @@ io.on('connection', function (socket) {
   socket.send({author: SYSTEM, content: '欢迎光临，给你自己起个好听的呢称吧!', createAt: new Date().toLocaleString()});
   //如果客户端发消息过来了，就会执行对应的监听函数
   socket.on('message', function (msg) {
-    if (username) {
-
+    if (username) {//如果呢称设置过了
+      io.emit('message',{//正常的具名聊天
+        author:username,//发言人就是当前用户
+        content:msg,//内容就是本次提交过来的消息
+        createAt:new Date().toLocaleString()
+      });
     } else {
       username = msg;
       //服务器收到消息后向所有的客户端发送消息
