@@ -46,9 +46,9 @@
   //监听连接成功事件
   //socket.on('connect');
   //监听message事件，当客户端收到服务器发过来的消息后执行对应的回调函数
-  socket.on('message', function (msg) {
+  socket.on('message', function (msgObj) {
     let li = document.createElement('li');
-    li.innerHTML = msg;
+    li.innerHTML = `${msgObj.author}:${msgObj.content} <span class="pull-right">${msgObj.createAt}</span>`;
     li.className = 'list-group-item';
     msgUl.appendChild(li);
   });
