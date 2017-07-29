@@ -19,6 +19,8 @@ let io = require('socket.io')(server);
 // io.emit('message')向所有的客户端发消息
 // socket.emit('message')向某个客户端发消息
 const SYSTEM = '系统';
+//这个对象记录着所有的用户名和它们的socket之间的关联
+const sockets = {};
 io.on('connection', function (socket) {
   //定义一个私有变量，用来存放每个用户的用户名
   let username;
@@ -26,6 +28,19 @@ io.on('connection', function (socket) {
   //如果客户端发消息过来了，就会执行对应的监听函数
   socket.on('message', function (msg) {
     if (username) {//如果呢称设置过了
+      //           @系统 hel中 lo
+      let regex = /@([^ ]+) (.+)/;
+      let result = msg.match(regex);
+      if(result){//如果能匹配上的话就是私聊
+        let toUser = result[1];//对方的用户名
+        let content = result[2];//这是私聊的内容
+        //先拿到toUser对应的socket对象
+        sockets[toUser].send({
+          author:username,
+          content,
+          createAt:new Date().toLocaleString()
+        });
+      }
       io.emit('message',{//正常的具名聊天
         author:username,//发言人就是当前用户
         content:msg,//内容就是本次提交过来的消息
@@ -33,6 +48,8 @@ io.on('connection', function (socket) {
       });
     } else {
       username = msg;
+      //在用户设置完用户名之后，把用户名和它对应的sockets对象关联起来
+      sockets[username] = socket;
       //服务器收到消息后向所有的客户端发送消息
       io.emit('message', {author: SYSTEM, content: `欢迎${username}来到聊天室`, createAt: new Date().toLocaleString()});
     }
