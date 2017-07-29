@@ -13,14 +13,17 @@
       xhr.open('GET','http://localhost:3000/clock',true);
       console.log('open ',xhr.readyState);// 2 3 4
       xhr.onreadystatechange = function(){
-        //console.log(xhr.readyState);// 2 3 4
+        console.log('ready state ',xhr.readyState);// 2 3 4
         if(xhr.readyState==4 && xhr.status == 200){
           document.querySelector('#clock').innerHTML = xhr.responseText;
-          //send();//如果响应接收完毕，再发送下一次请求
+          send();//如果响应接收完毕，再发送下一次请求
         }
       }
       xhr.send();
-      console.log('send ',xhr.readyState);// 2 3 4
+      //只有当响应体部接收完毕之后才会变成2
+      // 开始解析的时候变成3
+      // 全部解析之后变成4
+      console.log('send ',xhr.readyState);// 1
     }
     send();
 </script>

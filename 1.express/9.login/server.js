@@ -22,9 +22,9 @@ app.set('views',path.resolve('views'));
 app.engine('.html',require('ejs').__express);
 //有了session中间件之后会在req.session
 app.use(session({
-  resave:true,
-  saveUninitialized:true,
-  secret:'zfpx'
+  resave:true,//每次重新保存session
+  saveUninitialized:true,//保存未初始化的session
+  secret:'zfpx'//加密cookie用的秘钥
 }));
 /**
  * 静态文件 不会动的文件 不会动态改变的文件 html css js 图片 图标
