@@ -20,8 +20,8 @@
                 <div class="panel-heading">
                     <h3 class="text-center">
                         珠峰聊天室
-                        <button onclick="join('red')" class="btn btn-xs btn-danger red">粉红回忆</button>
-                        <button onclick="join('green')" class="btn btn-xs btn-success green">青涩记忆</button>
+                        <button onclick="join('red')" class="btn btn-danger red room">粉红回忆</button>
+                        <button onclick="join('green')" class="btn btn-success green room">青涩记忆</button>
                     </h3>
                 </div>
                 <div class="panel-body">
@@ -93,8 +93,14 @@
     socket.emit('join',roomName);
   }
   socket.on('joined',function(roomName){
-     let btn = document.querySelector('.'+roomName);
-     btn.className = btn.className.replace('btn-xs','');
+    let rooms = document.querySelectorAll('.room');
+    for(let i=0;i<rooms.length;i++){
+      rooms[i].className = rooms[i].className.replace('btn-lg','');
+    }
+    if(roomName){
+      let btn = document.querySelector('.'+roomName);
+      btn.className = btn.className+' btn-lg';
+    }
   });
 </script>
 </body>

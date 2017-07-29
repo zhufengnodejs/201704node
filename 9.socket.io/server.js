@@ -75,11 +75,15 @@ io.on('connection', function (socket) {
     if(currentRoom){//如果当前客户端在某个房间内，则需要退出当前房间
       socket.leave(currentRoom);
     }
-   //让某个客户端进入某个房间
-    socket.join(roomName);
-    currentRoom = roomName;//把新房间赋给当前房间
-    //我已经成功进入你指定的房间了
-    socket.emit('joined',roomName);
+    if(currentRoom != roomName){
+    //让某个客户端进入某个房间
+      socket.join(roomName);
+      currentRoom = roomName;//把新房间赋给当前房间
+      //我已经成功进入你指定的房间了
+    }else{
+      currentRoom = '';
+    }
+    socket.emit('joined',currentRoom);
   });
 });
 /*Socket.prototype.send = function(){
