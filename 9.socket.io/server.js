@@ -1,6 +1,7 @@
 let express = require('express');
 let path = require('path');
 let app = express();
+app.use(express.static(path.resolve('../node_modules')));
 //当客户端访问/的时候，需要返回一个聊天页面
 app.get('/',function(req,res){
   //用当前路径(__dirname)(当前文件所在的目录)+参数路径
