@@ -1,5 +1,6 @@
 let express = require('express');
 let path = require('path');
+let Message = require('./model');
 let app = express();
 app.use(express.static(path.resolve('../node_modules')));
 app.use(express.static(__dirname));
@@ -35,24 +36,21 @@ io.on('connection', function (socket) {
         let toUser = result[1];//对方的用户名
         let content = result[2];//这是私聊的内容
         //先拿到toUser对应的socket对象
-        sockets[toUser].send({
-          author:username,
-          content,
-          createAt:new Date().toLocaleString()
-        });
-        socket.send({
+        sockets[toUser] && sockets[toUser].send({
           author:username,
           content,
           createAt:new Date().toLocaleString()
         });
       }else{
-        io.emit('message',{//正常的具名聊天
+        //先把此对象保存到数据库中
+        Message.create({//正常的具名聊天
           author:username,//发言人就是当前用户
           content:msg,//内容就是本次提交过来的消息
           createAt:new Date().toLocaleString()
+        },function(err,message){
+          io.emit('message',message);
         });
       }
-
     } else {
       username = msg;
       //在用户设置完用户名之后，把用户名和它对应的sockets对象关联起来
@@ -80,5 +78,6 @@ server.listen(8080);
    1. 当连接上来的用户第一次发言的时候，服务器把发言的内容当成用户名
    2. 那么以后此用户再发言的话就会显示用户名发言
  三、 私聊
+ 四、 持续消息到数据库中
 
  **/
