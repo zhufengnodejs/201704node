@@ -40,12 +40,19 @@ io.on('connection', function (socket) {
           content,
           createAt:new Date().toLocaleString()
         });
+        socket.send({
+          author:username,
+          content,
+          createAt:new Date().toLocaleString()
+        });
+      }else{
+        io.emit('message',{//正常的具名聊天
+          author:username,//发言人就是当前用户
+          content:msg,//内容就是本次提交过来的消息
+          createAt:new Date().toLocaleString()
+        });
       }
-      io.emit('message',{//正常的具名聊天
-        author:username,//发言人就是当前用户
-        content:msg,//内容就是本次提交过来的消息
-        createAt:new Date().toLocaleString()
-      });
+
     } else {
       username = msg;
       //在用户设置完用户名之后，把用户名和它对应的sockets对象关联起来
