@@ -1,5 +1,6 @@
 let Socket = require('ws');
 //创建一个ws的客户端，请求连接服务器
+//协议 http ws pop3 smtp ftp 都属于应用层协议
 let socket = new Socket('ws://localhost:8080');
 //当连接已经建立，或者说连接已经打开
 socket.on('open',function(){
