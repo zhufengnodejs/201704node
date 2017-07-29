@@ -2,24 +2,52 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>珠峰聊天室</title>
     <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="/public.css">
 </head>
 <body>
-聊天室
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="text-center">珠峰聊天室</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group">
+
+                    </ul>
+                </div>
+                <div class="panel-footer">
+                    <form class="form-horizontal">
+                        <div class="form-group row">
+                            <div class="col-md-10">
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="col-md-2">
+                                <input type="submit" class="btn btn-primary">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-//当你引入这个脚本之后，会在window上多一个io的属性。
-//调用io方法可以得到一个socket实例
-    let socket = io();
-    //监听连接成功事件
-    socket.on('connect',function(){
-        socket.send('hello');//发送一个hello
-    });
-    //监听message事件，当客户端收到服务器发过来的消息后执行对应的回调函数
-    socket.on('message',function(msg){
-      console.log(msg);
-    });
+  //当你引入这个脚本之后，会在window上多一个io的属性。
+  //调用io方法可以得到一个socket实例
+  let socket = io();
+  //监听连接成功事件
+  socket.on('connect', function () {
+    socket.send('hello');//发送一个hello
+  });
+  //监听message事件，当客户端收到服务器发过来的消息后执行对应的回调函数
+  socket.on('message', function (msg) {
+    console.log(msg);
+  });
 </script>
 </body>
 </html>
