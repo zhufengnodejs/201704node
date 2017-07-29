@@ -85,6 +85,11 @@ io.on('connection', function (socket) {
     }
     socket.emit('joined',currentRoom);
   });
+  socket.on('delete',function(_id){
+    Message.remove({_id},function(err,result){
+      io.emit('deleted',_id);
+    });
+  });
 });
 /*Socket.prototype.send = function(){
  var args = Array.prototype.slice.call(arguments); //args= ["服务器:xx"]

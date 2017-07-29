@@ -10,6 +10,12 @@
               color:blue;
               cursor:pointer;
           }
+        li .btn-delete{
+            display:none;
+        }
+        li:hover .btn-delete{
+            display:inline-block;
+        }
     </style>
 </head>
 <body>
@@ -63,14 +69,15 @@
     let li = document.createElement('li');
     li.innerHTML = formatUser(msgObj);
     li.className = 'list-group-item';
+    li.id = 'li'+msgObj._id;
     msgUl.appendChild(li);
   });
   function formatUser(msgObj){
-    return `<span class="author">${msgObj.author}</span>:${msgObj.content} <span class="pull-right">${msgObj.createAt}</span>`;
+    return `<span class="author">${msgObj.author}</span>:${msgObj.content} <button class="btn btn-danger btn-xs btn-delete" data-id="${msgObj._id}">删除</button> <span class="pull-right">${new Date(msgObj.createAt).toLocaleString()}</span>`;
   }
   socket.on('allMessages',function(messages){
     msgUl.innerHTML = messages.map(msgObj=>(
-        `<li class="list-group-item">${formatUser(msgObj)}</li>`
+        `<li id="li${msgObj._id}" class="list-group-item">${formatUser(msgObj)}</li>`
       )).join('');
   });
   //当表单提交的时候调用此方法
@@ -85,6 +92,9 @@
     if(event.target.className == 'author'){
       let author = event.target.innerText;
       txtMsg.value = `@${author} `;
+    }else if(/(^| )btn-delete( |$)/.test(event.target.className)){
+      //data-xx dataset.xx 是自定义数据集
+        socket.emit('delete',event.target.dataset.id);
     }
   }
   //进入房间其实是让此客户端在服务器端的socket对应进入某个房间内
@@ -101,6 +111,9 @@
       let btn = document.querySelector('.'+roomName);
       btn.className = btn.className+' btn-lg';
     }
+  });
+  socket.on('deleted',function(_id){
+    document.querySelector('#li'+_id).parentNode.removeChild(document.querySelector('#li'+_id));
   });
 </script>
 </body>
