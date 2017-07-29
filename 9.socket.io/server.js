@@ -46,7 +46,6 @@ io.on('connection', function (socket) {
         Message.create({//正常的具名聊天
           author:username,//发言人就是当前用户
           content:msg,//内容就是本次提交过来的消息
-          createAt:new Date().toLocaleString()
         },function(err,message){
           io.emit('message',message);
         });
@@ -58,6 +57,14 @@ io.on('connection', function (socket) {
       //服务器收到消息后向所有的客户端发送消息
       io.emit('message', {author: SYSTEM, content: `欢迎${username}来到聊天室`, createAt: new Date().toLocaleString()});
     }
+  });
+  //监听客户端发过来的getAllMessages事件
+  socket.on('getAllMessages',function(){
+    Message.find().sort({createAt:-1}).limit(20).exec(function(err,messages){
+      messages.reverse();
+      //向客户端发送allMessages事件，客户端需要监听allMessages事件
+       socket.emit('allMessages',messages);
+    });
   });
 });
 /*Socket.prototype.send = function(){

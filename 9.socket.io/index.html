@@ -50,13 +50,24 @@
   //调用IO就是创建连接
   let socket = io();
   //监听连接成功事件
-  //socket.on('connect');
+  socket.on('connect',function(){
+    //向服务器发送一个事件，事件类型是getAllMessages
+    socket.emit('getAllMessages');
+  });
   //监听message事件，当客户端收到服务器发过来的消息后执行对应的回调函数
   socket.on('message', function (msgObj) {
     let li = document.createElement('li');
-    li.innerHTML = `<span class="author">${msgObj.author}</span>:${msgObj.content} <span class="pull-right">${msgObj.createAt}</span>`;
+    li.innerHTML = formatUser(msgObj);
     li.className = 'list-group-item';
     msgUl.appendChild(li);
+  });
+  function formatUser(msgObj){
+    return `<span class="author">${msgObj.author}</span>:${msgObj.content} <span class="pull-right">${msgObj.createAt}</span>`;
+  }
+  socket.on('allMessages',function(messages){
+    msgUl.innerHTML = messages.map(msgObj=>(
+        `<li class="list-group-item">${formatUser(msgObj)}</li>`
+      )).join('');
   });
   //当表单提交的时候调用此方法
   function send(event){
