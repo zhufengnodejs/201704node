@@ -5,6 +5,12 @@
     <title>珠峰聊天室</title>
     <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="/public.css">
+    <style>
+        .author{
+              color:blue;
+              cursor:pointer;
+          }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -15,7 +21,7 @@
                     <h3 class="text-center">珠峰聊天室</h3>
                 </div>
                 <div class="panel-body">
-                    <ul class="list-group">
+                    <ul onclick="chat(event)" class="list-group">
 
                     </ul>
                 </div>
@@ -48,7 +54,7 @@
   //监听message事件，当客户端收到服务器发过来的消息后执行对应的回调函数
   socket.on('message', function (msgObj) {
     let li = document.createElement('li');
-    li.innerHTML = `${msgObj.author}:${msgObj.content} <span class="pull-right">${msgObj.createAt}</span>`;
+    li.innerHTML = `<span class="author">${msgObj.author}</span>:${msgObj.content} <span class="pull-right">${msgObj.createAt}</span>`;
     li.className = 'list-group-item';
     msgUl.appendChild(li);
   });
@@ -58,6 +64,13 @@
     let msg = txtMsg.value;//取得消息输入框的值
     socket.send(msg);//把文本框中的消息发送给了服务器
     txtMsg.value = '';
+  }
+  //私聊
+  function chat(event){
+    if(event.target.className == 'author'){
+      let author = event.target.innerText;
+      txtMsg.value = `@${author} `;
+    }
   }
 </script>
 </body>
