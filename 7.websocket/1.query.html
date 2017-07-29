@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>轮询</title>
+</head>
+<body>
+<div id="clock"></div>
+<script>
+//浏览器周期性的向服务器发送请求，获得响应
+setInterval(()=>{
+  let xhr = new XMLHttpRequest;//创建ajax对象 0
+  //指定以何种方法，访问哪个路径。1
+  // http://localhost:63342/clock
+  xhr.open('GET','http://localhost:3000/clock',true);
+  //xhr.readState 0 1 2 3 4
+  //当接收到第一个响应字节后变为3
+  //当响应全部接收完毕变成4
+  xhr.onreadystatechange = function(){
+    if(xhr.readyState == 4 && xhr.status == 200){
+        document.querySelector('#clock').innerHTML = xhr.responseText;
+    }
+  }
+  //如果同步(false)，在服务器端没有响应之间不能执行后续操作,如果异步(true),即使服务器没有响应结束也可以继续向下执行其它代码
+  xhr.send();//2发送请求完毕
+  console.log('over');
+
+},1000)
+</script>
+</body>
+</html>
