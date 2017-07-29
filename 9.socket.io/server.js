@@ -16,11 +16,13 @@ let server = require('http').createServer(app);
 let io = require('socket.io')(server);
 //服务器端监听客户端的连接
 //每当有一个客户端连接上来后，会为这个客户端分配一个socket对象，然后就可以通过这个socket对象来进行通信
+// io.emit('message')向所有的客户端发消息
+// socket.emit('message')向某个客户端发消息
 io.on('connection',function(socket){
   //如果客户端发消息过来了，就会执行对应的监听函数
   socket.on('message',function(msg){
-    //向客户端发送消息
-    socket.send('服务器:'+msg);
+    //服务器收到消息后向所有的客户端发送消息
+    io.emit('message',msg);
   });
 });
 /*Socket.prototype.send = function(){
@@ -32,3 +34,9 @@ io.on('connection',function(socket){
   };*/
 server.listen(8080);
 
+/**
+  一、实现匿名聊天
+    1. 向服务器发送消息
+    2. 服务器向所有的客户端进行广播
+    3. 所有的客户端收到消息后在列表中显示
+ **/

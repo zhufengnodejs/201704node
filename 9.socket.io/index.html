@@ -20,10 +20,10 @@
                     </ul>
                 </div>
                 <div class="panel-footer">
-                    <form class="form-horizontal">
+                    <form class="form-horizontal" onsubmit="send(event)">
                         <div class="form-group row">
                             <div class="col-md-10">
-                                <input type="text" class="form-control">
+                                <input id="txtMsg" required type="text" class="form-control">
                             </div>
                             <div class="col-md-2">
                                 <input type="submit" class="btn btn-primary">
@@ -39,15 +39,26 @@
 <script>
   //当你引入这个脚本之后，会在window上多一个io的属性。
   //调用io方法可以得到一个socket实例
+  let txtMsg = document.querySelector('#txtMsg');
+  let msgUl = document.querySelector('.list-group');//获得列表
+  //调用IO就是创建连接
   let socket = io();
   //监听连接成功事件
-  socket.on('connect', function () {
-    socket.send('hello');//发送一个hello
-  });
+  //socket.on('connect');
   //监听message事件，当客户端收到服务器发过来的消息后执行对应的回调函数
   socket.on('message', function (msg) {
-    console.log(msg);
+    let li = document.createElement('li');
+    li.innerHTML = msg;
+    li.className = 'list-group-item';
+    msgUl.appendChild(li);
   });
+  //当表单提交的时候调用此方法
+  function send(event){
+    event.preventDefault();//阻止默认事件
+    let msg = txtMsg.value;//取得消息输入框的值
+    socket.send(msg);//把文本框中的消息发送给了服务器
+    txtMsg.value = '';
+  }
 </script>
 </body>
 </html>
