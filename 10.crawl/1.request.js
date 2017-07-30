@@ -12,9 +12,10 @@ request({url:'http://top.baidu.com/category?c=1',encoding:null},function(err,res
     body = iconv.decode(body,'gbk');
     let $ = cheerio.load(body);
     $('.hd .title a').each(function(index,item){
+
+      dddd
       //把原生的DOM对象包装成jQuery对象
        let xxx = $(this);
-       console.log(xxx.text());
     });
   }
 });
