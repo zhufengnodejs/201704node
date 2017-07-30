@@ -1,5 +1,6 @@
-let EventEmitter = require('events');
-let e = new EventEmitter();
-//docuemnt.addEventListener('click',functon(){})
-e.on('click',function(){console.log('click')});
-e.emit('click');
+console.time('cost1');
+console.time('cost2');
+for(let i=0;i<1000000;i++){}
+
+console.timeEnd('cost1');
+console.timeEnd('cost2');
