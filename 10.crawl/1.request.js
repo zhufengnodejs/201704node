@@ -1,6 +1,7 @@
 let request = require('request');
 //可以帮我们把GBK转成UTF8
 let iconv = require('iconv-lite');
+let cheerio = require('cheerio');
 //request是一个异步的方法，当读取URL完成后会执行对应的回调函数
 //如果我们设置encoding=null,那么request将不再对响应体进行转字符串操作，body就会保留Buffer类型
 //request接收到的原始类型肯定是Buffer,
@@ -9,6 +10,11 @@ request({url:'http://top.baidu.com/category?c=1',encoding:null},function(err,res
   if(!err && response.statusCode == 200){
     //把一个GBK类型的buffer转成utf8字符串
     body = iconv.decode(body,'gbk');
-    console.log(body);
+    let $ = cheerio.load(body);
+    $('.hd .title a').each(function(index,item){
+      //把原生的DOM对象包装成jQuery对象
+       let xxx = $(this);
+       console.log(xxx.text());
+    });
   }
 });
